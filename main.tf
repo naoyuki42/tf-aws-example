@@ -2,6 +2,7 @@ provider "aws" {
   region = "ap-northeast-1"
 }
 
+# IAMロールモジュール
 module "describe_regions_for_ec2" {
   source     = "./iam_role"
   name       = "describe-regions-for-ec2"
