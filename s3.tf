@@ -38,7 +38,8 @@ resource "aws_s3_bucket" "public" {
 
 # ログバケット
 resource "aws_s3_bucket" "alb_log" {
-  bucket = "alb-log-20220813"
+  bucket        = "alb-log-20220813"
+  force_destroy = true
 
   lifecycle_rule {
     enabled = true
@@ -62,7 +63,7 @@ data "aws_iam_policy_document" "alb_log" {
 
     principals {
       type        = "AWS"
-      identifiers = ["790074688592"]
+      identifiers = ["582318560864"]
     }
   }
 }
