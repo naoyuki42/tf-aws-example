@@ -1,3 +1,4 @@
+# ドメイン
 data "aws_route53_zone" "default" {
   name = "nao42.com"
 }
@@ -14,10 +15,7 @@ resource "aws_route53_record" "default" {
   }
 }
 
-output "domain_name" {
-  value = aws_route53_record.default.name
-}
-
+# SSL/TLS証明書
 resource "aws_acm_certificate" "default" {
   domain_name               = aws_route53_record.default.name
   subject_alternative_names = []
@@ -39,4 +37,8 @@ resource "aws_route53_record" "default_certificate" {
 resource "aws_acm_certificate_validation" "default" {
   certificate_arn         = aws_acm_certificate.default.arn
   validation_record_fqdns = [aws_route53_record.default_certificate.fqdn]
+}
+
+output "domain_name" {
+  value = aws_route53_record.default.name
 }
