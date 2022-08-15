@@ -4,6 +4,7 @@ resource "aws_ecs_cluster" "default" {
 }
 
 # タスク定義
+# アプリケーション
 resource "aws_ecs_task_definition" "default" {
   family                   = "default"
   cpu                      = "256"
@@ -11,6 +12,17 @@ resource "aws_ecs_task_definition" "default" {
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
   container_definitions    = file("./container_definitions.json")
+  execution_role_arn       = module.ecs_task_execution_role.iam_role_arn
+}
+
+# バッチ処理
+resource "aws_ecs_task_definition" "default_batch" {
+  family                   = "default-batch"
+  cpu                      = 256
+  memory                   = 512
+  network_mode             = "awsvpc"
+  requires_compatibilities = ["FARGATE"]
+  container_definitions    = file("./batch_container_definitions.json")
   execution_role_arn       = module.ecs_task_execution_role.iam_role_arn
 }
 
@@ -43,13 +55,9 @@ resource "aws_ecs_service" "default" {
   lifecycle {
     ignore_changes = [task_definition]
   }
-
-  #   depends_on = [
-  #     aws_lb_listener.https,
-  #     aws_lb_listener_rule.default
-  #   ]
 }
 
+# セキュリティグループ
 module "nginx_sg" {
   source      = "./security_group"
   name        = "nginx-sg"
