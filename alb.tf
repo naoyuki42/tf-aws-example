@@ -87,7 +87,8 @@ resource "aws_lb_listener_rule" "default" {
   }
 
   condition {
-    field = "path-pattern"
-    value = ["/*"]
+    path_pattern {
+      values = ["/*"]
+    }
   }
 }
