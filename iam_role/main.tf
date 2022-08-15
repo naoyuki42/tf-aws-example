@@ -21,16 +21,20 @@ data "aws_iam_policy_document" "assume_role" {
 
 # IAMポリシー
 resource "aws_iam_policy" "default" {
-  name   = "default"
+  name   = var.name
   policy = var.policy
 }
 
 # IAMロールとIAMポリシーの紐づけ
-resource "aws_iam_role_policy_attachment" "example" {
+resource "aws_iam_role_policy_attachment" "default" {
   role       = aws_iam_role.default.name
   policy_arn = aws_iam_policy.default.arn
 }
 
 output "iam_role_arn" {
   value = aws_iam_role.default.arn
+}
+
+output "iam_role_name" {
+  value = aws_iam_role.default.name
 }
