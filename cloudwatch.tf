@@ -40,14 +40,14 @@ resource "aws_cloudwatch_event_target" "default_batch" {
   arn       = aws_ecs_cluster.default.arn
 
   ecs_target {
-    launch_type = "FARGATE"
-    task_count = 1
-    platform_version = "1.3.0"
+    launch_type         = "FARGATE"
+    task_count          = 1
+    platform_version    = "1.3.0"
     task_definition_arn = aws_ecs_task_definition.default_batch.arn
 
     network_configuration {
       assign_public_ip = false
-      subnets = [aws_subnet.private_01.id]
+      subnets          = [aws_subnet.private_01.id]
     }
   }
 }
@@ -68,4 +68,10 @@ module "ecs_events_role" {
 
 data "aws_iam_policy" "ecs_events_execution_role_policy" {
   arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceEventsRole"
+}
+
+# SSMオペレーションログ
+resource "aws_cloudwatch_log_group" "operation" {
+  name              = "/operation"
+  retention_in_days = 180
 }

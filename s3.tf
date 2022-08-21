@@ -36,7 +36,7 @@ resource "aws_s3_bucket" "public" {
   }
 }
 
-# ログバケット
+# albログ用バケット
 resource "aws_s3_bucket" "alb_log" {
   bucket        = "alb-log-20220813"
   force_destroy = true
@@ -64,6 +64,18 @@ data "aws_iam_policy_document" "alb_log" {
     principals {
       type        = "AWS"
       identifiers = ["582318560864"]
+    }
+  }
+}
+
+resource "aws_s3_bucket" "operation" {
+  bucket = "operation-20220821"
+
+  lifecycle_rule {
+    enabled = true
+
+    expiration {
+      days = 180
     }
   }
 }
