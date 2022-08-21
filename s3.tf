@@ -79,3 +79,15 @@ resource "aws_s3_bucket" "operation" {
     }
   }
 }
+
+resource "aws_s3_bucket" "cloudwatch_logs" {
+  bucket = "cloudwatch-logs-20220821"
+
+  lifecycle_rule {
+    enabled = true
+
+    expiration {
+      days = 180
+    }
+  }
+}
